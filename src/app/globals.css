@@ -24,3 +24,20 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Add this to your globals.css */
+a[href*="unicorn.studio?utm_source=public-url"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+iframe[src*="unicorn.studio"] {
+  opacity: 1 !important; /* keep scene visible */
+}
+
+iframe + a[href*="unicorn.studio?utm_source=public-url"] {
+  display: none !important;
+}
+
