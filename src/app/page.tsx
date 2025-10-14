@@ -1,10 +1,11 @@
 import Header from "./components/header/Header";
+import UnicornSceneComponent from "./components/unicorn-scene-home/UnicornSceneHome";
 
 const Home = () => {
-  
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div className="bg-black">
       <Header />
+      <UnicornSceneComponent />
     </div>
   );
 }
