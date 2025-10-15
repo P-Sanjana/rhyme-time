@@ -41,6 +41,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-playbutton: oklch(0.4319 0.1572 11.8);
+  --color-playbutton-hover: oklch(0.4868 0.1677 10.21);
 }
 
 :root {
@@ -120,4 +122,12 @@
     @apply bg-background text-foreground;
   }
 }
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
+.animate-gradient-move {
+  animation: gradient-move 6s ease infinite;
+}
