@@ -15,9 +15,9 @@ const GamePage = () =>{
 
   return (
     <div className="relative h-[90vh] bg-black flex flex-col items-center justify-center text-white overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,transparent_70%)] animate-flicker"></div>
       {count > 0 ? 
       <>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,transparent_70%)] animate-flicker"></div>
         <h2 className="text-4xl font-semibold mb-4">{GAME_STARTS_IN}</h2>
         <h1 className="text-6xl font-bold z-10">{count}</h1>
       </> : 'Go!'}
