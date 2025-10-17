@@ -7,7 +7,7 @@ import { DAILYCHALLENGE, SIGNUPSIGNIN } from '@/app/constants';
 
 const Header = () => {
   return (
-    <div className='flex justify-between items-center mx-1 h-[10vh]'>
+    <div className='flex justify-between items-center mx-2 h-[10vh]'>
       <Image
         onClick={() => {
           console.log('logo clicked');
