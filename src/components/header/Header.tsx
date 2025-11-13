@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import Image from '../image/Image';
-import { Button } from '@/ui/button';
-import Logo from '../../../../public/logo.png';
+import { Button } from '@/components/shadcn/button';
+// import Logo from '../../../../public/logo.png';
 import { DAILYCHALLENGE, SIGNUPSIGNIN } from '@/app/constants';
 
 const Header = () => {
@@ -12,7 +12,7 @@ const Header = () => {
         onClick={() => {
           console.log('logo clicked');
         }}
-        src={Logo}
+        src={'/logo.png'}
         width={80}
         height={80}
         alt='Logo'
