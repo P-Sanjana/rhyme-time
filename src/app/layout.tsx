@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Poppins } from 'next/font/google';
+// import LocalFont from 'next/font/local';
 import './globals.css';
-import Header from './components/header/Header';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -19,6 +19,11 @@ const poppins = Poppins({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
 });
 
+// const ginger = LocalFont({
+//   src: '../../public/fonts/Ginger.ttf',
+//   variable: '--font-ginger',
+// })
+
 export const metadata: Metadata = {
   title: 'Rhyme Time',
   description: 'A rhyme game',
@@ -34,7 +39,6 @@ export default function RootLayout({
       <body
         className={`${poppins.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-          <Header />
           {children}
       </body>
     </html>

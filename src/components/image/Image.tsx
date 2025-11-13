@@ -1,9 +1,8 @@
 import React, {FC} from 'react';
 import Image from 'next/image';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 interface ImageProps {
-  src: StaticImport;
+  src: string;
   alt: string;
   width: number;
   height: number;

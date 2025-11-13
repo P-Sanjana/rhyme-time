@@ -7,15 +7,15 @@ import {
     CardTitle,
     CardContent,
     CardFooter,
-  } from '@/ui/card';
-  import { Button } from '@/ui/button';
+  } from '@/components/shadcn/card';
+  import { Button } from '@/components/shadcn/button';
   import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from '@/ui/select';
+  } from '@/components/shadcn/select';
 import Chip from '../chip/Chip';
 import { CHOOSE_TIMER, DIFFICULTY, DIFFICULTY_LEVELS, GAMESETUP, PLAY, TIMELIMITS } from '@/app/constants';
 
@@ -30,19 +30,16 @@ const GameSetupModal = () => {
         >
           <X size={20} />
         </button>
-
         <CardHeader>
           <CardTitle className="text-center text-xl font-semibold">
             {GAMESETUP}
           </CardTitle>
         </CardHeader>
-
         <CardContent className="space-y-6">
           <div>
             <p className="text-sm font-medium mb-2">{DIFFICULTY}</p>
             <Chip difficultyLevels={DIFFICULTY_LEVELS} difficulty={difficulty} setDifficulty={setDifficulty} />
           </div>
-
           <div>
             <p className="text-sm font-medium mb-2">{CHOOSE_TIMER}</p>
             <Select value={timeLimit} onValueChange={(val) => setTimeLimit(val)}>
@@ -58,8 +55,7 @@ const GameSetupModal = () => {
               </SelectContent>
             </Select>
           </div>
-        </CardContent>
-                
+        </CardContent>      
         <CardFooter>
           <Button
             className="w-full font-semibold bg-playbutton hover:bg-playbutton-hover hover:opacity-90 hover:scale-[1.02]"
@@ -70,6 +66,5 @@ const GameSetupModal = () => {
       </Card>
     </div>
     )
-
 }
 export default GameSetupModal;
