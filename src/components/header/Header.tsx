@@ -2,8 +2,8 @@
 import React from 'react';
 import Image from '../image/Image';
 import { Button } from '@/components/shadcn/button';
-// import Logo from '../../../../public/logo.png';
 import { DAILYCHALLENGE, SIGNUPSIGNIN } from '@/app/constants';
+import ThemeToggle from '../theme-toggle/ThemeToggle';
 
 const Header = () => {
   return (
@@ -26,7 +26,13 @@ const Header = () => {
         >
           {DAILYCHALLENGE}
         </Button>
-        <Button className='bg-transparent border-[0.5px] border-white'>{SIGNUPSIGNIN}</Button>
+        <Button
+          variant='ghost'
+          className='bg-transparent border-[0.5px] border-black dark:border-white'
+        >
+          {SIGNUPSIGNIN}
+        </Button>
+        <ThemeToggle />
       </div>
     </div>
   );

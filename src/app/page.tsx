@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 import LightRays from '@/components/shadcn/LightRays';
 import Header from '@/components/header/Header';
-import SplashCursor from '@/components/shadcn/SplashCursor';
 
 const Home = () => {
   const CubeScene = dynamic(
@@ -11,8 +10,7 @@ const Home = () => {
     { ssr: false }
   );
   return (
-    <div className='relative bg-black h-screen overflow-hidden'>
-      <SplashCursor />
+    <div className='relative bg-white dark:bg-black h-screen overflow-hidden'>
       <div className='absolute inset-0 z-0'>
         <LightRays
           raysOrigin='top-center'
