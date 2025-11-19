@@ -22,7 +22,7 @@ const AppName = () => {
 
   useFrame(() => {
     const elapsed = performance.now() - startTime.current;
-    if (elapsed > 2000 && opacity.current < 1) {
+    if (elapsed > 2500 && opacity.current < 1) {
       opacity.current = Math.min(1, opacity.current + 0.02);
       textRef.current?.traverse((child) => {
         if (child instanceof THREE.Mesh && child.material) {
