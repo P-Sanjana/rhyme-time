@@ -17,7 +17,7 @@ import {
     SelectValue,
   } from '@/components/shadcn/select';
 import Chip from '../chip/Chip';
-import { CHOOSE_TIMER, DIFFICULTY, DIFFICULTY_LEVELS, GAMESETUP, PLAY, TIMELIMITS } from '@/app/constants';
+import { CHOOSE_TIMER, DIFFICULTY, DIFFICULTY_LEVELS, GAMESETUP, PLAY, TIMELIMITS } from '@/lib/constants';
 
 const GameSetupModal = () => {
     const [difficulty, setDifficulty] = useState(DIFFICULTY_LEVELS[0]);

@@ -12,11 +12,11 @@ const ThemeToggle = () => {
     <>
       {theme === 'dark' && (
         <Button
-          variant='outline'
+          variant='default'
           size='icon'
           onClick={() => setTheme('light')}
           aria-label='Light mode'
-          className='shadow-blue-900'
+          className='shadow-blue-900 border-1 border-white'
         >
           <Moon className='h-[1.2rem] w-[1.2rem]' />
         </Button>
@@ -27,7 +27,7 @@ const ThemeToggle = () => {
           size='icon'
           onClick={() => setTheme('dark')}
           aria-label='Dark mode'
-          className=' shadow-yellow-500 bg-white'
+          className=' shadow-yellow-500 bg-white border-1 border-black'
         >
           <Sun className='h-[1.2rem] w-[1.2rem] text-yellow-700' />
         </Button>

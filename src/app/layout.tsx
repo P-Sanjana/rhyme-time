@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Poppins } from 'next/font/google';
-// import LocalFont from 'next/font/local';
+import { Geist, Geist_Mono } from 'next/font/google';
+import LocalFont from 'next/font/local';
 import './globals.css';
 import { ThemeProvider } from '@/lib/ThemeProvider';
 
@@ -14,16 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-const poppins = Poppins({
-  variable: '--font-poppins',
-  subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700', '800'],
-});
-
-// const ginger = LocalFont({
-//   src: '../../public/fonts/Ginger.ttf',
-//   variable: '--font-ginger',
-// })
+const saudagar = LocalFont({
+  src: '../../public/fonts/Saudagar.ttf',
+  variable: '--font-saudagar',
+})
 
 export const metadata: Metadata = {
   title: 'Rhyme Time',
@@ -38,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${poppins.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` ${saudagar.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
           attribute='class'

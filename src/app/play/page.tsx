@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { _10POINTS, _15POINTS, GAME_STARTS_IN, RARE_RHYME_EARNS, RHYME_EARNS } from '@/app/constants';
+import { _10POINTS, _15POINTS, GAME_STARTS_IN, RARE_RHYME_EARNS, RHYME_EARNS } from '@/lib/constants';
 
 const GamePage = () =>{
   const [count, setCount] = useState<number>(3);
