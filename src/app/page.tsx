@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import LightRays from '@/components/shadcn/LightRays';
 import Header from '@/components/header/Header';
+import IntroText from '@/components/intro-text/IntroText';
 
 const Home = () => {
   const CubeScene = dynamic(
@@ -30,6 +31,9 @@ const Home = () => {
       </div>
       <div className='absolute inset-0 z-10'>
         <CubeScene />
+      </div>
+      <div className='relative z-20 top-[45%]'>
+        <IntroText />
       </div>
     </div>
   );

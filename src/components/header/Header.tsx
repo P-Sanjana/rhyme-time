@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from '../image/Image';
 import { Button } from '@/components/shadcn/button';
-import { DAILYCHALLENGE, SIGNUPSIGNIN } from '@/app/constants';
+import { DAILYCHALLENGE, SIGNUPSIGNIN } from '@/lib/constants';
 import ThemeToggle from '../theme-toggle/ThemeToggle';
 
 const Header = () => {
@@ -22,13 +22,13 @@ const Header = () => {
           onClick={() => {
             console.log('clicked');
           }}
-          className='font-medium border-0 bg-transparent  hover:bg-transparent hover:cursor-pointer m-0 p-0'
+          className='font-bold tracking-wider border-0 bg-transparent  hover:bg-transparent hover:cursor-pointer m-0 p-0'
         >
           {DAILYCHALLENGE}
         </Button>
         <Button
           variant='ghost'
-          className='bg-transparent border-[0.5px] border-black dark:border-white'
+          className='bg-transparent font-bold tracking-wider border-[0.5px] border-black dark:border-white'
         >
           {SIGNUPSIGNIN}
         </Button>

@@ -1,7 +1,7 @@
 // 'use client';
 
 // import { useState } from 'react';
-import { SLOGAN, SUBHEADING1, SUBHEADING2 } from '@/app/constants';
+import { SLOGAN, SUBHEADING1, SUBHEADING2 } from '@/lib/constants';
 import UnicornScene from 'unicornstudio-react/next';
 
 const UnicornSceneHome =  () => {
