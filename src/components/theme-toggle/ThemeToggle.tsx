@@ -27,7 +27,7 @@ const ThemeToggle = () => {
           size='icon'
           onClick={() => setTheme('dark')}
           aria-label='Dark mode'
-          className=' shadow-yellow-500 bg-white border-1 border-black'
+          className='shadow-yellow-500 bg-white border-1 border-black'
         >
           <Sun className='h-[1.2rem] w-[1.2rem] text-yellow-700' />
         </Button>

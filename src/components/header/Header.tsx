@@ -12,13 +12,13 @@ const Header = () => {
         onClick={() => {
           console.log('logo clicked');
         }}
-        src={'/logo.png'}
+        src={'/logo.gif'}
         width={80}
         height={80}
         alt='Logo'
       />
       <div className='flex justify-between items-center gap-4'>
-        <Button
+        {/* <Button
           onClick={() => {
             console.log('clicked');
           }}
@@ -31,7 +31,7 @@ const Header = () => {
           className='bg-transparent font-bold tracking-wider border-[0.5px] border-black dark:border-white'
         >
           {SIGNUPSIGNIN}
-        </Button>
+        </Button> */}
         <ThemeToggle />
       </div>
     </div>
