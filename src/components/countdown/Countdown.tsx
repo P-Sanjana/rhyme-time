@@ -8,7 +8,7 @@ const digitPaths: (string | undefined)[] = [
   'M81.7,85.7c-1.4-67,112.3-55.1,90.2,11.6c-12.6,32-70.6,83.7-88.8,113.7h105.8',
   'M74.8,178.5c3,39.4,63.9,46.7,88.6,23.7c34.3-35.1,5.4-75.8-41.7-77c29.9,5.5,68.7-43.1,36.5-73.7 c-23.4-21.5-76.5-11.1-78.6,25',
 ];
-export default function GooeyCountdown({}) {
+const Countdown = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const circlesRef = useRef<SVGCircleElement[]>([]);
   const currentRef = useRef(3);
@@ -88,7 +88,7 @@ export default function GooeyCountdown({}) {
                         0 0 0 18 -7'
                 result='goo'
               />
-              {/* <feComposite in="SourceGraphic" in2="goo" operator="atop" /> */}
+              <feComposite in="SourceGraphic" in2="goo" operator="atop" />
             </filter>
             <path
               id='path-1'
@@ -132,3 +132,4 @@ export default function GooeyCountdown({}) {
     </div>
   );
 }
+export default Countdown;

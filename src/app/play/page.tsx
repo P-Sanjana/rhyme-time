@@ -8,7 +8,7 @@ import {
   RARE_RHYME_EARNS,
   RHYME_EARNS,
 } from '@/lib/constants';
-import GooeyCountdownText from '@/components/countdown/Countdown';
+import Countdown from '@/components/countdown/Countdown';
 import Header from '@/components/header/Header';
 
 const GamePage = () => {
@@ -29,7 +29,7 @@ const GamePage = () => {
           <h2 className='text-5xl text-center font-bold mb-4'>
             {GAME_STARTS_IN}
           </h2>
-          <GooeyCountdownText />
+          <Countdown />
           <div className='mt-2'>
             <h2 className='text-center font-semibold mb-2 tracking-wider'>
               {RHYME_EARNS}{' '}
