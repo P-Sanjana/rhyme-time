@@ -8,13 +8,15 @@ const AppName = () => {
   const startTime = useRef<number>(0);
   const opacity = useRef<number>(0);
 
-  scene.traverse((child) => {
-    if (child instanceof THREE.Mesh && child.material) {
-      child.material.transparent = true;
-      child.material.opacity = 0;
-      child.material.needsUpdate = true;
-    }
-  });
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (child instanceof THREE.Mesh && child.material) {
+        child.material.transparent = true;
+        child.material.opacity = 0;
+        child.material.needsUpdate = true;
+      }
+    });
+  }, [scene]);
 
   useEffect(() => {
     startTime.current = performance.now();
