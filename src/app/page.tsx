@@ -5,12 +5,20 @@ import LightRays from '@/components/shadcn/LightRays';
 import Header from '@/components/header/Header';
 import IntroText from '@/components/intro-text/IntroText';
 import CharacterCursor from '@/components/shadcn/CharacterCursor';
-
+import { useCallback, useState } from 'react';
+import GameSetupModal from '@/components/game-setup-modal/GameSetupModal';
+const CubeScene = dynamic(
+  () => import('../components/3d-cube-scene/Cube-Scene'),
+  { ssr: false }
+);
 const Home = () => {
-  const CubeScene = dynamic(
-    () => import('../components/3d-cube-scene/Cube-Scene'),
-    { ssr: false }
-  );
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const openModal = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const closeModal = useCallback(() => {
+    setIsOpen(false);
+  }, []);
   return (
     <div className='relative bg-white dark:bg-black h-screen overflow-hidden'>
       <CharacterCursor />
@@ -35,8 +43,9 @@ const Home = () => {
         <CubeScene />
       </div>
       <div className='relative z-20 top-[45%]'>
-        <IntroText />
+        <IntroText onClick={openModal} />
       </div>
+      {isOpen && <GameSetupModal onXClick={closeModal} />}
     </div>
   );
 };
