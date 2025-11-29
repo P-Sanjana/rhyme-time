@@ -42,7 +42,7 @@ interface ModalProps {
 }
 const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
   const [difficulty, setDifficulty] = useState<string>(DIFFICULTY_LEVELS[0]);
-  const [timeLimit, setTimeLimit] = useState<string>(TIMELIMITS[1]);
+  const [timelimit, setTimelimit] = useState<string>(TIMELIMITS[1]);
   const ref = useRef<HTMLElement | null>(null);
   const x = useMotionValue<number>(0);
   const y = useMotionValue<number>(0);
@@ -152,16 +152,20 @@ const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
                     <div>
                       <p className='text-sm font-bold mb-2'>{CHOOSE_TIMER}</p>
                       <Select
-                        value={timeLimit}
-                        onValueChange={(val) => setTimeLimit(val)}
+                        value={timelimit}
+                        onValueChange={(val) => setTimelimit(val)}
                       >
-                        <SelectTrigger className='w-[50%]'>
+                        <SelectTrigger className='w-[50%] font-semibold border-[#407c51]'>
                           <SelectValue placeholder='Select timer' />
                         </SelectTrigger>
                         <SelectContent>
                           {TIMELIMITS.map((time) => (
-                            <SelectItem key={time} value={time}>
-                              {time}
+                            <SelectItem
+                              key={time}
+                              value={time}
+                              className='font-semibold'
+                            >
+                              {time} sec
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -169,7 +173,15 @@ const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
                     </div>
                   </CardContent>
                   <CardFooter className='w-full flex justify-center'>
-                    <Link href={'/play'}>
+                    <Link
+                      href={{
+                        pathname: '/play',
+                        query: {
+                          difficulty,
+                          timelimit,
+                        },
+                      }}
+                    >
                       <SlideButton text={PLAY} />
                     </Link>
                   </CardFooter>

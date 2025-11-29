@@ -6,11 +6,10 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/shadcn/button';
 
 const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
-
+  const { theme, setTheme, systemTheme } = useTheme();
   return (
     <>
-      {theme === 'dark' && (
+      {(theme === 'dark' || (theme === 'system' && systemTheme === 'dark')) && (
         <Button
           variant='default'
           size='icon'
@@ -21,7 +20,8 @@ const ThemeToggle = () => {
           <Moon className='h-[1.2rem] w-[1.2rem]' />
         </Button>
       )}
-      {theme === 'light' && (
+      {(theme === 'light' ||
+        (theme === 'system' && systemTheme === 'light')) && (
         <Button
           variant='outline'
           size='icon'
