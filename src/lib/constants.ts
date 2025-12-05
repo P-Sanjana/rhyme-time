@@ -15,3 +15,9 @@ export const RARE_RHYME_EARNS = 'Each rare rhyme earns';
 export const _15POINTS = '15 points';
 export const GAME_STARTS_IN = 'Game starts in';
 export const PLAY_SUBHEADING = 'Rhyme as many words as you can with';
+export const RAIN = 'rain';
+export const SAME = 'same!';
+export const ALREADY_USED_MESSAGE = 'Same old chime, craft a brand-new rhyme!';
+export const NOT_A_RHYME_MESSAGE =
+  'That word missed the beat — need something that rhymes neat!';
+export const PRESS_ENTER_MESSAGE = 'Press Enter to score';

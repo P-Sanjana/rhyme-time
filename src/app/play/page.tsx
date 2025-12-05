@@ -1,26 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   _10POINTS,
   _15POINTS,
+  ALREADY_USED_MESSAGE,
   GAME_STARTS_IN,
+  NOT_A_RHYME_MESSAGE,
+  RAIN,
   RARE_RHYME_EARNS,
   RHYME_EARNS,
+  SAME,
 } from '@/lib/constants';
 import Countdown from '@/components/countdown/Countdown';
 import Header from '@/components/header/Header';
-import { getRandomWord } from '@/lib/services';
+import { getRandomWord, getRhymes } from '@/lib/services';
 import { useSearchParams } from 'next/navigation';
 import FallingText from '@/components/shadcn/FallingText';
 import DecryptedText from '@/components/shadcn/DecryptedText';
+import Input from '@/components/input/Input';
 
 const GamePage = () => {
   const params = useSearchParams();
   const [count, setCount] = useState<number>(3);
   const [randomWord, setRandomWord] = useState<string>('');
+  const [rhymes, setRhymes] = useState<string[]>([]);
+  const [usedRhymes, setUsedRhymes] = useState<string[]>([]);
+  const [value, setValue] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [score, setScore] = useState<number | null>(null);
   const difficulty = params.get('difficulty')?.toLowerCase();
   const timelimit = params.get('timelimit');
+  const highlightWords = useMemo(() => [{ RAIN }, SAME] as never[], []);
 
   useEffect(() => {
     const loadRandomWord = async () => {
@@ -44,7 +55,34 @@ const GamePage = () => {
       return () => clearTimeout(timer);
     }
   }, [count, randomWord]);
-
+  useEffect(() => {
+    const loadRhymes = async () => {
+      const rhymes = await getRhymes(randomWord);
+      setRhymes(rhymes);
+    };
+    if (randomWord !== '') {
+      loadRhymes();
+    }
+  }, [randomWord]);
+  const checkRhyme = useCallback(() => {
+    if (
+      rhymes.includes(value.toLowerCase()) &&
+      !usedRhymes.includes(value.toLowerCase())
+    ) {
+      setScore(10);
+      setError('');
+      setValue('');
+      setUsedRhymes([...usedRhymes, value.toLowerCase()]);
+    } else if (usedRhymes.includes(value.toLowerCase())) {
+      setScore(null);
+      setError(ALREADY_USED_MESSAGE);
+      setValue('');
+    } else {
+      setScore(null);
+      setError(NOT_A_RHYME_MESSAGE);
+      setValue('');
+    }
+  }, [rhymes, usedRhymes, value]);
   return (
     <div className='relative bg-white dark:bg-black h-screen'>
       <Header />
@@ -74,16 +112,13 @@ const GamePage = () => {
           <div className='h-[100%] w-[100%]'>
             <FallingText
               text={'Let the rhymes rain, words that sound the same!'}
-              trigger='auto'
-              className='px-12'
-              highlightWords={['rain', 'same!'] as unknown as never[]}
+              highlightWords={highlightWords}
               backgroundColor='transparent'
               wireframes={false}
               gravity={0.56}
-              mouseConstraintStiffness={0.9}
             >
               <DecryptedText
-                text={randomWord}
+                text={randomWord.toLocaleUpperCase()}
                 animateOn='view'
                 revealDirection='start'
                 sequential
@@ -92,6 +127,16 @@ const GamePage = () => {
                 encryptedClassName='font-bold text-3xl tracking-wider text-[#ef9967]'
                 className='mt-50 font-bold text-3xl tracking-wider text-[#407c51]'
               />
+              <div className='p-10 max-w-md mx-auto'>
+                <Input
+                  value={value}
+                  setValue={setValue}
+                  error={error}
+                  onEnter={checkRhyme}
+                  score={score}
+                  setScore={setScore}
+                />
+              </div>
             </FallingText>
           </div>
         </div>

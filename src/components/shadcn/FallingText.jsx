@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from 'react';
 import Matter from 'matter-js';
 import './FallingText.css';
+import React from 'react';
 
 const FallingText = ({
   className = '',
   text = '',
   highlightWords = [],
   highlightClass = 'highlighted',
-  trigger = 'auto',
   backgroundColor = 'transparent',
   wireframes = false,
   gravity = 1,
@@ -34,28 +34,13 @@ const FallingText = ({
   }, [text, highlightWords, highlightClass]);
 
   useEffect(() => {
-    if (trigger === 'auto') {
       setTimeout(() => {
         setEffectStarted(true);
       }, 2000);
       return;
-    }
-    if (trigger === 'scroll' && containerRef.current) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setEffectStarted(true);
-            observer.disconnect();
-          }
-        },
-        { threshold: 0.1 }
-      );
-      observer.observe(containerRef.current);
-      return () => observer.disconnect();
-    }
-  }, [trigger]);
+  }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     if (!effectStarted) return;
 
     const { Engine, Render, World, Bodies, Runner, Mouse, MouseConstraint } = Matter;
@@ -160,18 +145,11 @@ const FallingText = ({
     };
   }, [effectStarted, gravity, wireframes, backgroundColor, mouseConstraintStiffness]);
 
-  const handleTrigger = () => {
-    if (!effectStarted && (trigger === 'click' || trigger === 'hover')) {
-      setEffectStarted(true);
-    }
-  };
 
   return (
     <div
       ref={containerRef}
       className={`falling-text-container ${className}`}
-      onClick={trigger === 'click' ? handleTrigger : undefined}
-      onMouseEnter={trigger === 'hover' ? handleTrigger : undefined}
       style={{
         position: 'relative',
         overflow: 'hidden'
@@ -185,10 +163,11 @@ const FallingText = ({
           lineHeight: 1.4
         }}
       />
+     
+      <div ref={canvasContainerRef} className="falling-text-canvas" />
       <div className='mt-3'>
         {children}
       </div>
-      <div ref={canvasContainerRef} className="falling-text-canvas" />
     </div>
   );
 };
