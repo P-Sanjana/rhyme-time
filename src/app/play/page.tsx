@@ -29,7 +29,7 @@ import FlyingWord from '@/components/flying-word/FlyingWord';
 const GamePage = () => {
   const params = useSearchParams();
   const [count, setCount] = useState<number>(3);
-  const [randomWord, setRandomWord] = useState<string>('go');
+  const [randomWord, setRandomWord] = useState<string>('');
   const [rhymes, setRhymes] = useState<Record<string, number>>({});
   const [usedRhymes, setUsedRhymes] = useState<Record<string, boolean>>({});
   const [value, setValue] = useState<string>('');
