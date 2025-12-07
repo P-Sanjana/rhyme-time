@@ -1,10 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   _10POINTS,
   _15POINTS,
   ALREADY_USED_MESSAGE,
+  FALLING_TEXT,
+  GAME_DESCRIPTION,
+  GAME_DESCRIPTION2,
   GAME_STARTS_IN,
   NOT_A_RHYME_MESSAGE,
   RAIN,
@@ -14,24 +17,32 @@ import {
 } from '@/lib/constants';
 import Countdown from '@/components/countdown/Countdown';
 import Header from '@/components/header/Header';
-import { getRandomWord, getRhymes } from '@/lib/services';
+import { getRandomWord } from '@/lib/services';
 import { useSearchParams } from 'next/navigation';
 import FallingText from '@/components/shadcn/FallingText';
 import DecryptedText from '@/components/shadcn/DecryptedText';
 import Input from '@/components/input/Input';
+import { getRhymes } from '@/lib/serverActions';
+import Word from '@/components/word/Word';
+import FlyingWord from '@/components/flying-word/FlyingWord';
 
 const GamePage = () => {
   const params = useSearchParams();
   const [count, setCount] = useState<number>(3);
-  const [randomWord, setRandomWord] = useState<string>('');
-  const [rhymes, setRhymes] = useState<string[]>([]);
-  const [usedRhymes, setUsedRhymes] = useState<string[]>([]);
+  const [randomWord, setRandomWord] = useState<string>('go');
+  const [rhymes, setRhymes] = useState<Record<string, number>>({});
+  const [usedRhymes, setUsedRhymes] = useState<Record<string, boolean>>({});
   const [value, setValue] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [score, setScore] = useState<number | null>(null);
-  const difficulty = params.get('difficulty')?.toLowerCase();
+  const difficulty = params.get('difficulty');
   const timelimit = params.get('timelimit');
-  const highlightWords = useMemo(() => [{ RAIN }, SAME] as never[], []);
+  const highlightWords = useMemo(() => [RAIN, SAME] as never[], []);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const [flyWord, setFlyWord] = useState<{
+    word: string;
+    start: DOMRect | null;
+  }>({ word: '', start: null });
 
   useEffect(() => {
     const loadRandomWord = async () => {
@@ -65,15 +76,19 @@ const GamePage = () => {
     }
   }, [randomWord]);
   const checkRhyme = useCallback(() => {
-    if (
-      rhymes.includes(value.toLowerCase()) &&
-      !usedRhymes.includes(value.toLowerCase())
-    ) {
-      setScore(10);
+    if (value == '') return;
+    const user_value = value.toLowerCase();
+    if (user_value in rhymes && !(user_value in usedRhymes)) {
+      setScore(rhymes[value] > 3 ? 10 : 15);
+      const rect = inputRef.current?.getBoundingClientRect() ?? null;
+      setFlyWord({
+        word: value,
+        start: rect,
+      });
       setError('');
       setValue('');
-      setUsedRhymes([...usedRhymes, value.toLowerCase()]);
-    } else if (usedRhymes.includes(value.toLowerCase())) {
+      setUsedRhymes({ ...usedRhymes, [user_value]: rhymes[value] <= 3 });
+    } else if (user_value in usedRhymes) {
       setScore(null);
       setError(ALREADY_USED_MESSAGE);
       setValue('');
@@ -89,8 +104,7 @@ const GamePage = () => {
       {count > 0 ? (
         <>
           <p className='tetx-xl text-center font-semibold mb-4'>
-            Rhyme as many as you can and as fast as you can within {timelimit}{' '}
-            seconds
+            {GAME_DESCRIPTION} {timelimit} {GAME_DESCRIPTION2}
           </p>
           <h2 className='text-5xl text-center font-bold mb-4 z-50'>
             {GAME_STARTS_IN}
@@ -108,26 +122,29 @@ const GamePage = () => {
           </div>
         </>
       ) : (
-        <div className='flex h-[90%] items-center flex-col z-50'>
-          <div className='h-[100%] w-[100%]'>
+        <div className='relative h-[90%] w-full overflow-hidden'>
+          <div className='absolute inset-0 pointer-events-none z-0'>
             <FallingText
-              text={'Let the rhymes rain, words that sound the same!'}
+              text={FALLING_TEXT}
               highlightWords={highlightWords}
               backgroundColor='transparent'
               wireframes={false}
               gravity={0.56}
-            >
+            ></FallingText>
+          </div>
+          <div className='flex flex-col h-full w-full px-6 py-8 absolute top-1/6'>
+            <div className='w-full max-w-md mx-auto mb-6 flex flex-col items-center'>
               <DecryptedText
-                text={randomWord.toLocaleUpperCase()}
+                text={randomWord.toUpperCase()}
                 animateOn='view'
                 revealDirection='start'
                 sequential
                 speed={200}
                 maxIterations={20}
                 encryptedClassName='font-bold text-3xl tracking-wider text-[#ef9967]'
-                className='mt-50 font-bold text-3xl tracking-wider text-[#407c51]'
+                className='mb-6 font-bold text-3xl tracking-wider text-[#407c51]'
               />
-              <div className='p-10 max-w-md mx-auto'>
+              <div ref={inputRef} className='w-full'>
                 <Input
                   value={value}
                   setValue={setValue}
@@ -137,7 +154,31 @@ const GamePage = () => {
                   setScore={setScore}
                 />
               </div>
-            </FallingText>
+            </div>
+            {flyWord.start && (
+              <FlyingWord
+                word={flyWord.word}
+                start={flyWord.start}
+                clearFly={() => setFlyWord({ word: '', start: null })}
+                isRare={usedRhymes[flyWord.word]}
+              />
+            )}
+            <div
+              className='flex-1 w-full px-4 overflow-y-auto no-scrollbar'
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                touchAction: 'pan-y',
+              }}
+            >
+              <div
+                id='rhyme-list'
+                className='max-w-md mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-12 pb-10'
+              >
+                {Object.entries(usedRhymes).map(([word, isRare], i) => (
+                  <Word key={word} word={word} isRare={isRare} index={i} />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
