@@ -177,7 +177,7 @@ const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
                       href={{
                         pathname: '/play',
                         query: {
-                          difficulty,
+                          difficulty: difficulty.toLowerCase(),
                           timelimit,
                         },
                       }}

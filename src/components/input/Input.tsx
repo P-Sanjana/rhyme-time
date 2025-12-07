@@ -1,6 +1,7 @@
 'use client';
 
 import { PRESS_ENTER_MESSAGE } from '@/lib/constants';
+import clsx from 'clsx';
 import { FC, useEffect, useRef, useState } from 'react';
 
 interface InputProps {
@@ -74,22 +75,20 @@ const Input: FC<InputProps> = ({
         />
         {showScore && score && (
           <div
-            className='absolute right-4 
-              top-0 -translate-y-full
-              text-[#407c51] font-bold text-xl 
-              pointer-events-none select-none
-              animate-floatUpRightNoCollision
-            '
+            className={clsx(
+              'absolute right-4 top-0 -translate-y-full font-bold text-xl pointer-events-none select-none animate-floatUpRightNoCollision',
+              score === 15 ? 'text-[#407c51]' : 'text-[#ef9967]'
+            )}
           >
             +{score}
           </div>
         )}
       </div>
-      <p className=' text-sm font-semibold text-[#407c51] mt-3 tracking-wider'>
+      <p className='text-sm font-semibold text-center text-[#407c51] mt-3 tracking-wider'>
         {PRESS_ENTER_MESSAGE}
       </p>
       {error && (
-        <p className='text-red-400 text-sm font-semibold tracking-wider mt-2 animate-fadeIn'>
+        <p className='text-red-400 text-center text-sm font-semibold tracking-wider mt-2 animate-fadeIn'>
           {error}
         </p>
       )}

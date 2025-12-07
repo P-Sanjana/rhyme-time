@@ -13,7 +13,6 @@ const FallingText = ({
   gravity = 1,
   mouseConstraintStiffness = 0.2,
   fontSize = '2.5rem',
-  children
 }) => {
   const containerRef = useRef(null);
   const textRef = useRef(null);
@@ -165,9 +164,6 @@ const FallingText = ({
       />
      
       <div ref={canvasContainerRef} className="falling-text-canvas" />
-      <div className='mt-3'>
-        {children}
-      </div>
     </div>
   );
 };
