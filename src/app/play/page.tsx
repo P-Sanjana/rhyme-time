@@ -25,6 +25,7 @@ import Input from '@/components/input/Input';
 import { getRhymes } from '@/lib/serverActions';
 import Word from '@/components/word/Word';
 import FlyingWord from '@/components/flying-word/FlyingWord';
+import Timer from '@/components/timer/Timer';
 
 const GamePage = () => {
   const params = useSearchParams();
@@ -36,7 +37,7 @@ const GamePage = () => {
   const [error, setError] = useState<string>('');
   const [score, setScore] = useState<number | null>(null);
   const difficulty = params.get('difficulty');
-  const timelimit = params.get('timelimit');
+  const timelimit = Number(params.get('timelimit'));
   const highlightWords = useMemo(() => [RAIN, SAME] as never[], []);
   const inputRef = useRef<HTMLDivElement>(null);
   const [flyWord, setFlyWord] = useState<{
@@ -133,18 +134,25 @@ const GamePage = () => {
             ></FallingText>
           </div>
           <div className='flex flex-col h-full w-full px-6 py-8 absolute top-1/6'>
-            <div className='w-full max-w-md mx-auto mb-6 flex flex-col items-center'>
-              <DecryptedText
-                text={randomWord.toUpperCase()}
-                animateOn='view'
-                revealDirection='start'
-                sequential
-                speed={200}
-                maxIterations={20}
-                encryptedClassName='font-bold text-3xl tracking-wider text-[#ef9967]'
-                className='mb-6 font-bold text-3xl tracking-wider text-[#407c51]'
-              />
-              <div ref={inputRef} className='w-full'>
+            <div className='w-full max-w-4xl mx-auto mb-6'>
+              <div className='relative flex items-center justify-center w-full'>
+                <div className='absolute left-1/2 transform -translate-x-1/2'>
+                  <DecryptedText
+                    text={randomWord.toUpperCase()}
+                    animateOn='view'
+                    revealDirection='start'
+                    sequential
+                    speed={200}
+                    maxIterations={20}
+                    encryptedClassName='font-bold text-4xl tracking-wider text-[#ef9967]'
+                    className='font-bold text-4xl tracking-wider text-[#407c51]'
+                  />
+                </div>
+                <div className='absolute right-0'>
+                  <Timer start={timelimit ?? 60} />
+                </div>
+              </div>
+              <div ref={inputRef} className='w-full mt-20 flex justify-center'>
                 <Input
                   value={value}
                   setValue={setValue}
