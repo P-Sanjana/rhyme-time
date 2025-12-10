@@ -218,7 +218,13 @@ const GamePage = () => {
           </div>
         </div>
       )}
-      {showResults && <ScoreModal totalScore={totalScore} rareRhymes={rareRhymes} openModal={openModal} />}
+      {showResults && (
+        <ScoreModal
+          totalScore={totalScore}
+          rareRhymes={rareRhymes}
+          openModal={openModal}
+        />
+      )}
       {isOpen && <GameSetupModal onXClick={closeModal} />}
     </div>
   );
