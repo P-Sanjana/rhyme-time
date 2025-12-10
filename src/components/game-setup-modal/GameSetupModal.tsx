@@ -30,7 +30,6 @@ import {
 } from '@/lib/constants';
 import RippleButton from '../shadcn/ripplebutton';
 import SlideButton from '../shadcn/slidebutton';
-import Link from 'next/link';
 
 const springValues = {
   damping: 30,
@@ -88,6 +87,10 @@ const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
     rotateY.set(0);
     rotateFigcaption.set(0);
   }, [opacity, rotateFigcaption, rotateX, rotateY, scale]);
+  const navigateToGame = useCallback(() => {
+    window.location.href = `/play?difficulty=${difficulty.toLowerCase()}&timelimit=${timelimit}`;
+    onXClick();
+  }, [difficulty, onXClick, timelimit]);
   return (
     <div>
       <AnimatePresence>
@@ -173,17 +176,7 @@ const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
                     </div>
                   </CardContent>
                   <CardFooter className='w-full flex justify-center'>
-                    <Link
-                      href={{
-                        pathname: '/play',
-                        query: {
-                          difficulty: difficulty.toLowerCase(),
-                          timelimit,
-                        },
-                      }}
-                    >
-                      <SlideButton text={PLAY} />
-                    </Link>
+                    <SlideButton text={PLAY} onClick={navigateToGame} />
                   </CardFooter>
                 </Card>
               </motion.div>

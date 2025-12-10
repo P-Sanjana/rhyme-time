@@ -5,20 +5,34 @@ import { FC, useEffect, useState } from 'react';
 
 interface TimerProps {
   start: number;
+  onFinish: () => void;
 }
 
-const Timer: FC<TimerProps> = ({ start }) => {
+const Timer: FC<TimerProps> = ({ start, onFinish }) => {
   const [time, setTime] = useState<number>(start);
+  const [active, setActive] = useState<boolean>(false); // Timer starts only after 2s
 
   useEffect(() => {
-    if (time === 0) return;
+    const delay = setTimeout(() => {
+      setActive(true);
+    }, 2000);
+
+    return () => clearTimeout(delay);
+  }, []);
+
+  useEffect(() => {
+    if (time == 0) {
+      onFinish?.();
+      return;
+    }
+    if (!active || time === 0) return;
 
     const interval = setInterval(() => {
       setTime((t) => t - 1);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [time]);
+  }, [active, onFinish, time]);
 
   return (
     <div className='flex items-center justify-center mt-8 animate-slide-in transition-all duration-700'>
