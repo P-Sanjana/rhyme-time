@@ -8,12 +8,16 @@ import {
   FALLING_TEXT,
   GAME_DESCRIPTION,
   GAME_DESCRIPTION2,
+  GAME_OVER,
   GAME_STARTS_IN,
   NOT_A_RHYME_MESSAGE,
+  PLAY_AGAIN,
   RAIN,
   RARE_RHYME_EARNS,
   RHYME_EARNS,
   SAME,
+  TOP_RHYMES_HEADING,
+  TOTAL_SCORE,
 } from '@/lib/constants';
 import Countdown from '@/components/countdown/Countdown';
 import Header from '@/components/header/Header';
@@ -26,6 +30,8 @@ import { getRhymes } from '@/lib/serverActions';
 import Word from '@/components/word/Word';
 import FlyingWord from '@/components/flying-word/FlyingWord';
 import Timer from '@/components/timer/Timer';
+import GameSetupModal from '@/components/game-setup-modal/GameSetupModal';
+import ScoreModal from '@/components/score-modal/ScoreModal';
 
 const GamePage = () => {
   const params = useSearchParams();
@@ -44,10 +50,20 @@ const GamePage = () => {
     word: string;
     start: DOMRect | null;
   }>({ word: '', start: null });
+  const [totalScore, setTotalScore] = useState<number>(0);
+  const [showResults, setShowResults] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const openModal = useCallback(() => {
+    setIsOpen(true);
+    setShowResults(false);
+  }, []);
+  const closeModal = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   useEffect(() => {
     const loadRandomWord = async () => {
-      const word = await getRandomWord(difficulty ?? 'Easy');
+      const word = await getRandomWord(difficulty ?? 'easy');
       setRandomWord(word);
     };
     loadRandomWord();
@@ -80,7 +96,9 @@ const GamePage = () => {
     if (value == '') return;
     const user_value = value.toLowerCase();
     if (user_value in rhymes && !(user_value in usedRhymes)) {
-      setScore(rhymes[value] > 3 ? 10 : 15);
+      const pts = rhymes[value] > 3 ? 10 : 15;
+      setScore(pts);
+      setTotalScore((prev) => prev + pts);
       const rect = inputRef.current?.getBoundingClientRect() ?? null;
       setFlyWord({
         word: value,
@@ -99,12 +117,22 @@ const GamePage = () => {
       setValue('');
     }
   }, [rhymes, usedRhymes, value]);
+  const timerFinish = useCallback(() => {
+    setShowResults(true);
+  }, [setShowResults]);
+  const rareRhymes = useMemo(() => {
+    return Object.entries(usedRhymes)
+      .filter(([_, isRare]) => isRare)
+      .map(([w]) => w)
+      .slice(0, 5);
+  }, [usedRhymes]);
+
   return (
     <div className='relative bg-white dark:bg-black h-screen'>
       <Header />
       {count > 0 ? (
         <>
-          <p className='tetx-xl text-center font-semibold mb-4'>
+          <p className='tetx-xl text-center font-semibold mb-4 tracking-wider'>
             {GAME_DESCRIPTION} {timelimit} {GAME_DESCRIPTION2}
           </p>
           <h2 className='text-5xl text-center font-bold mb-4 z-50'>
@@ -149,7 +177,7 @@ const GamePage = () => {
                   />
                 </div>
                 <div className='absolute right-0'>
-                  <Timer start={timelimit ?? 60} />
+                  <Timer start={timelimit} onFinish={timerFinish} />
                 </div>
               </div>
               <div ref={inputRef} className='w-full mt-20 flex justify-center'>
@@ -190,6 +218,14 @@ const GamePage = () => {
           </div>
         </div>
       )}
+      {showResults && (
+        <ScoreModal
+          totalScore={totalScore}
+          rareRhymes={rareRhymes}
+          openModal={openModal}
+        />
+      )}
+      {isOpen && <GameSetupModal onXClick={closeModal} />}
     </div>
   );
 };
