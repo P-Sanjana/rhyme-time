@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
 import Image from '../image/Image';
-import { Button } from '@/components/shadcn/button';
-import { DAILYCHALLENGE, SIGNUPSIGNIN } from '@/lib/constants';
 import ThemeToggle from '../theme-toggle/ThemeToggle';
 
 const Header = () => {

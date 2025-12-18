@@ -1,23 +1,27 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   _10POINTS,
   _15POINTS,
   ALREADY_USED_MESSAGE,
+  BACKEND_SLEEPY_MESSAGE,
   FALLING_TEXT,
   GAME_DESCRIPTION,
   GAME_DESCRIPTION2,
-  GAME_OVER,
   GAME_STARTS_IN,
   NOT_A_RHYME_MESSAGE,
-  PLAY_AGAIN,
   RAIN,
   RARE_RHYME_EARNS,
   RHYME_EARNS,
   SAME,
-  TOP_RHYMES_HEADING,
-  TOTAL_SCORE,
 } from '@/lib/constants';
 import Countdown from '@/components/countdown/Countdown';
 import Header from '@/components/header/Header';
@@ -53,6 +57,7 @@ const GamePage = () => {
   const [totalScore, setTotalScore] = useState<number>(0);
   const [showResults, setShowResults] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isBackendSleepy, setIsBackendSleepy] = useState<boolean>(false);
   const openModal = useCallback(() => {
     setIsOpen(true);
     setShowResults(false);
@@ -75,6 +80,9 @@ const GamePage = () => {
         if (count == 1) {
           if (randomWord !== '') {
             setCount(count - 1);
+            setIsBackendSleepy(false);
+          } else {
+            setIsBackendSleepy(true);
           }
         } else {
           setCount(count - 1);
@@ -128,105 +136,115 @@ const GamePage = () => {
   }, [usedRhymes]);
 
   return (
-    <div className='relative bg-white dark:bg-black h-screen'>
-      <Header />
-      {count > 0 ? (
-        <>
-          <p className='tetx-xl text-center font-semibold mb-4 tracking-wider'>
-            {GAME_DESCRIPTION} {timelimit} {GAME_DESCRIPTION2}
-          </p>
-          <h2 className='text-5xl text-center font-bold mb-4 z-50'>
-            {GAME_STARTS_IN}
-          </h2>
-          <Countdown />
-          <div>
-            <h2 className='text-center font-semibold mb-2 tracking-wider'>
-              {RHYME_EARNS}{' '}
-              <span className='text-[#ef9967] font-bold'>{_10POINTS}</span>
+    <Suspense>
+      <div className='relative bg-white dark:bg-black h-screen'>
+        <Header />
+        {count > 0 ? (
+          <>
+            <p className='text-xl text-center font-semibold mb-4 tracking-wider'>
+              {GAME_DESCRIPTION} {timelimit} {GAME_DESCRIPTION2}
+            </p>
+            <h2 className='text-5xl text-center font-bold z-50'>
+              {GAME_STARTS_IN}
             </h2>
-            <h2 className='text-center font-semibold tracking-wider'>
-              {RARE_RHYME_EARNS}{' '}
-              <span className='text-[#407c51] font-bold'>{_15POINTS}</span>
-            </h2>
-          </div>
-        </>
-      ) : (
-        <div className='relative h-[90%] w-full overflow-hidden'>
-          <div className='absolute inset-0 pointer-events-none z-0'>
-            <FallingText
-              text={FALLING_TEXT}
-              highlightWords={highlightWords}
-              backgroundColor='transparent'
-              wireframes={false}
-              gravity={0.56}
-            ></FallingText>
-          </div>
-          <div className='flex flex-col h-full w-full px-6 py-8 absolute top-1/6'>
-            <div className='w-full max-w-4xl mx-auto mb-6'>
-              <div className='relative flex items-center justify-center w-full'>
-                <div className='absolute left-1/2 transform -translate-x-1/2'>
-                  <DecryptedText
-                    text={randomWord.toUpperCase()}
-                    animateOn='view'
-                    revealDirection='start'
-                    sequential
-                    speed={200}
-                    maxIterations={20}
-                    encryptedClassName='font-bold text-4xl tracking-wider text-[#ef9967]'
-                    className='font-bold text-4xl tracking-wider text-[#407c51]'
+            <Countdown />
+            {isBackendSleepy && (
+              <p className='text-xl text-center font-semibold mb-4 tracking-wider'>
+                {BACKEND_SLEEPY_MESSAGE}
+              </p>
+            )}
+            <div>
+              <h2 className='text-center font-semibold mb-2 tracking-wider'>
+                {RHYME_EARNS}{' '}
+                <span className='text-[#ef9967] font-bold'>{_10POINTS}</span>
+              </h2>
+              <h2 className='text-center font-semibold tracking-wider'>
+                {RARE_RHYME_EARNS}{' '}
+                <span className='text-[#407c51] font-bold'>{_15POINTS}</span>
+              </h2>
+            </div>
+          </>
+        ) : (
+          <div className='relative h-[90%] w-full overflow-hidden'>
+            <div className='absolute inset-0 pointer-events-none z-0'>
+              <FallingText
+                text={FALLING_TEXT}
+                highlightWords={highlightWords}
+                backgroundColor='transparent'
+                wireframes={false}
+                gravity={0.56}
+              ></FallingText>
+            </div>
+            <div className='flex flex-col h-full w-full px-6 py-8 absolute top-1/6'>
+              <div className='w-full max-w-4xl mx-auto mb-6'>
+                <div className='relative flex items-center justify-center w-full'>
+                  <div className='absolute left-1/2 transform -translate-x-1/2'>
+                    <DecryptedText
+                      text={randomWord.toUpperCase()}
+                      animateOn='view'
+                      revealDirection='start'
+                      sequential
+                      speed={200}
+                      maxIterations={20}
+                      encryptedClassName='font-bold text-4xl tracking-wider text-[#ef9967]'
+                      className='font-bold text-4xl tracking-wider text-[#407c51]'
+                    />
+                  </div>
+                  <div className='absolute right-0'>
+                    <Timer start={timelimit} onFinish={timerFinish} />
+                  </div>
+                </div>
+                <div
+                  ref={inputRef}
+                  className='w-full mt-20 flex justify-center'
+                >
+                  <Input
+                    value={value}
+                    setValue={setValue}
+                    error={error}
+                    onEnter={checkRhyme}
+                    score={score}
+                    setScore={setScore}
                   />
                 </div>
-                <div className='absolute right-0'>
-                  <Timer start={timelimit} onFinish={timerFinish} />
-                </div>
               </div>
-              <div ref={inputRef} className='w-full mt-20 flex justify-center'>
-                <Input
-                  value={value}
-                  setValue={setValue}
-                  error={error}
-                  onEnter={checkRhyme}
-                  score={score}
-                  setScore={setScore}
+              {flyWord.start && (
+                <FlyingWord
+                  word={flyWord.word}
+                  start={flyWord.start}
+                  clearFly={() => setFlyWord({ word: '', start: null })}
+                  isRare={usedRhymes[flyWord.word]}
                 />
-              </div>
-            </div>
-            {flyWord.start && (
-              <FlyingWord
-                word={flyWord.word}
-                start={flyWord.start}
-                clearFly={() => setFlyWord({ word: '', start: null })}
-                isRare={usedRhymes[flyWord.word]}
-              />
-            )}
-            <div
-              className='flex-1 w-full px-4 overflow-y-auto no-scrollbar'
-              style={{
-                WebkitOverflowScrolling: 'touch',
-                touchAction: 'pan-y',
-              }}
-            >
+              )}
               <div
-                id='rhyme-list'
-                className='max-w-md mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-12 pb-10'
+                className='flex-1 w-full px-4 overflow-y-auto no-scrollbar'
+                style={{
+                  WebkitOverflowScrolling: 'touch',
+                  touchAction: 'pan-y',
+                }}
               >
-                {Object.entries(usedRhymes).map(([word, isRare], i) => (
-                  <Word key={word} word={word} isRare={isRare} index={i} />
-                ))}
+                <div
+                  id='rhyme-list'
+                  className='max-w-md mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-12 pb-10'
+                >
+                  {Object.entries(usedRhymes).map(([word, isRare], i) => (
+                    <Word key={word} word={word} isRare={isRare} index={i} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-      {showResults && (
-        <ScoreModal
-          totalScore={totalScore}
-          rareRhymes={rareRhymes}
-          openModal={openModal}
-        />
-      )}
-      {isOpen && <GameSetupModal onXClick={closeModal} />}
-    </div>
+        )}
+        {showResults && (
+          <ScoreModal
+            totalScore={totalScore}
+            rareRhymes={rareRhymes}
+            openModal={openModal}
+          />
+        )}
+        {isOpen && <GameSetupModal onXClick={closeModal} />}
+      </div>
+    </Suspense>
   );
 };
 export default GamePage;

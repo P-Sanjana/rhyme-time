@@ -69,7 +69,7 @@ const Countdown = () => {
 
   return (
     <div className='flex items-center justify-center p-6'>
-      <div className='w-[360px] h-[360px]'>
+      <div className='w-[320px] h-[320px]'>
         <svg
           ref={svgRef}
           viewBox='0 0 320 240'
@@ -88,7 +88,7 @@ const Countdown = () => {
                         0 0 0 18 -7'
                 result='goo'
               />
-              <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+              <feComposite in='SourceGraphic' in2='goo' operator='atop' />
             </filter>
             <path
               id='path-1'
@@ -131,5 +131,5 @@ const Countdown = () => {
       </div>
     </div>
   );
-}
+};
 export default Countdown;

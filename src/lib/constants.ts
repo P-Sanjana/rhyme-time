@@ -65,3 +65,5 @@ export const LOW_SCORE_MESSAGES = [
   'Every try builds skill, your breakthrough rhyme soon will thrill ✍️',
   'Take a breath, don’t rush the flow, reset, reload, and watch yourself grow 🌬️',
 ];
+export const BACKEND_SLEEPY_MESSAGE =
+  'Our backend is just waking up ☕, hang tight!';
