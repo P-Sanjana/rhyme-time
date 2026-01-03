@@ -20,7 +20,7 @@ export const SAME = 'same!';
 export const ALREADY_USED_MESSAGE = 'Same old chime, craft a brand-new rhyme!';
 export const NOT_A_RHYME_MESSAGE =
   'That word missed the beat, need something that rhymes neat!';
-export const PRESS_ENTER_MESSAGE = 'Press Enter to score';
+export const PRESS_ENTER_MESSAGE = 'Press enter to score';
 export const GAME_DESCRIPTION =
   'Rhyme as many as you can and as fast as you can within';
 export const GAME_DESCRIPTION2 = ' seconds.';

@@ -8,6 +8,9 @@ const digitPaths: (string | undefined)[] = [
   'M81.7,85.7c-1.4-67,112.3-55.1,90.2,11.6c-12.6,32-70.6,83.7-88.8,113.7h105.8',
   'M74.8,178.5c3,39.4,63.9,46.7,88.6,23.7c34.3-35.1,5.4-75.8-41.7-77c29.9,5.5,68.7-43.1,36.5-73.7 c-23.4-21.5-76.5-11.1-78.6,25',
 ];
+const DOT_COUNT = 28;
+const NAMESPACE = 'http://www.w3.org/2000/svg';
+
 const Countdown = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const circlesRef = useRef<SVGCircleElement[]>([]);
@@ -19,10 +22,9 @@ const Countdown = () => {
     const circlesGroup = svg.querySelector('.circles');
     if (!circlesGroup) return;
     circlesGroup.innerHTML = '';
-    const namespace = 'http://www.w3.org/2000/svg';
     circlesRef.current = [];
-    for (let i = 0; i < 28; i++) {
-      const c = document.createElementNS(namespace, 'circle');
+    for (let i = 0; i < DOT_COUNT; i++) {
+      const c = document.createElementNS(NAMESPACE, 'circle');
       c.setAttribute('r', '10');
       c.setAttribute('cx', '0');
       c.setAttribute('cy', '0');
@@ -38,7 +40,7 @@ const Countdown = () => {
       const length = pathEl.getTotalLength();
       const step = length / 28;
 
-      for (let i = 0; i < 28; i++) {
+      for (let i = 0; i < DOT_COUNT; i++) {
         const pos = pathEl.getPointAtLength(i * step);
         const delay = i * 0.02;
         const circle = circlesRef.current[i];
@@ -69,10 +71,10 @@ const Countdown = () => {
 
   return (
     <div className='flex items-center justify-center p-6'>
-      <div className='w-[320px] h-[320px]'>
+      <div className='w-[320px]'>
         <svg
           ref={svgRef}
-          viewBox='0 0 320 240'
+          viewBox='0 0 250 240'
           className='w-full h-full'
           xmlns='http://www.w3.org/2000/svg'
         >
