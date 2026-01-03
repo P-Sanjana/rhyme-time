@@ -39,6 +39,8 @@ const springValues = {
 interface ModalProps {
   onXClick: () => void;
 }
+const isTouchDevice =
+  typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
 const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
   const [difficulty, setDifficulty] = useState<string>(DIFFICULTY_LEVELS[0]);
   const [timelimit, setTimelimit] = useState<string>(TIMELIMITS[1]);
@@ -94,7 +96,7 @@ const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
   return (
     <div>
       <AnimatePresence>
-        <div className='flex z-50 fixed inset-0 cursor-pointer items-center justify-center overflow-y-scroll p-8 backdrop-blur'>
+        <div className='flex z-50 fixed inset-0 cursor-pointer items-center justify-center overflow-y-scroll p-8 backdrop-blur-sm'>
           <motion.div
             initial={{ scale: 0, rotate: '180deg' }}
             animate={{
@@ -107,30 +109,24 @@ const GameSetupModal: FC<ModalProps> = ({ onXClick }) => {
             }}
             exit={{ scale: 0, rotate: '180deg' }}
             onClick={(e) => e.stopPropagation()}
-            className='relative cursor-default overflow-hidden rounded-xl p-6 max-w-sm'
+            className='relative cursor-default overflow-visible rounded-xl p-6 max-w-sm'
           >
             <figure
               ref={ref}
-              className='relative w-[100%] h-[100%] flex flex-col items-center justify-center perspective-[800px]'
-              style={{
-                height: '350px',
-                width: '100%',
-              }}
-              onMouseMove={handleMouse}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
+              className='relative  w-full h-full max-w-87.5 aspect-square flex flex-col items-center justify-center perspective-midrange'
+              onMouseMove={isTouchDevice ? undefined : handleMouse}
+              onMouseEnter={isTouchDevice ? undefined : handleMouseEnter}
+              onMouseLeave={isTouchDevice ? undefined : handleMouseLeave}
             >
               <motion.div
-                className='relative transform-3d will-change-transform transform translate-z-[0]'
+                className='relative transform-3d will-change-transform transform translate-z-0 rounded-2xl shadow-2xl bg-white'
                 style={{
-                  width: '350px',
-                  height: '350px',
                   rotateX,
                   rotateY,
                   scale,
                 }}
               >
-                <Card className='relative shadow-xl'>
+                <Card className='relative rounded-2xl'>
                   <button className='absolute top-3 right-3'>
                     <X size={20} onClick={onXClick} />
                   </button>

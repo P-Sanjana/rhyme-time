@@ -35,10 +35,10 @@ const Timer: FC<TimerProps> = ({ start, onFinish }) => {
   }, [active, onFinish, time]);
 
   return (
-    <div className='flex items-center justify-center mt-8 animate-slide-in transition-all duration-700'>
+    <div className='flex items-center justify-center mt-4 sm:mt-8 animate-slide-in transition-all duration-700'>
       <div
         className={`
-          text-2xl font-bold tracking-widest px-6 py-3 rounded-2xl shadow-md
+          text-base sm:text-lg md:text-2xl font-bold tracking-widest px-3 py-2 sm:px-4 sm:py-2 md:px-6 md:py-3 rounded-2xl shadow-md
           ${
             time <= 5
               ? 'bg-red-500 shadow-red-400 animate-heartbeat animate-shake animate-pulse'

@@ -156,9 +156,8 @@ const FallingText = ({
     >
       <div
         ref={textRef}
-        className="falling-text-target tracking-wider font-bold"
+        className="falling-text-target text-base sm:text-lg md:text-xl tracking-wider font-bold"
         style={{
-          fontSize: fontSize,
           lineHeight: 1.4
         }}
       />

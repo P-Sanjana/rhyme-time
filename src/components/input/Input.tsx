@@ -11,6 +11,7 @@ interface InputProps {
   onEnter: () => void;
   score: number | null;
   setScore: (score: number | null) => void;
+  disabled: boolean;
 }
 const Input: FC<InputProps> = ({
   value,
@@ -19,10 +20,10 @@ const Input: FC<InputProps> = ({
   onEnter,
   score,
   setScore,
+  disabled,
 }) => {
   const [showScore, setShowScore] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     if (score) {
       setShowScore(true);
@@ -58,8 +59,12 @@ const Input: FC<InputProps> = ({
         <input
           id='animated-input'
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={disabled ? undefined : (e) => setValue(e.target.value)}
           onKeyDown={(e) => {
+            if (disabled) {
+              e.preventDefault();
+              return;
+            }
             if (e.key === 'Enter') {
               e.preventDefault();
               onEnter();
@@ -72,6 +77,7 @@ const Input: FC<InputProps> = ({
             peer z-100 relative
            ${error ? 'border-red-500' : ''}
           `}
+          disabled={disabled}
         />
         {showScore && score && (
           <div

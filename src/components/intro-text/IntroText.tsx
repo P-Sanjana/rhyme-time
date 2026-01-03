@@ -23,17 +23,21 @@ const IntroText: FC<IntroTextProps> = ({ onClick }) => {
       ref={containerRef}
       className='opacity-0 transition-opacity duration-1000 text-center'
     >
-      <h1 className='text-4xl font-bold tracking-wide'>
+      <h1 className='text-2xl md:text-4xl font-bold tracking-wide'>
         <span
           onClick={onClick}
           className='text-[#407c51] hover:text-[#ef9967] cursor-pointer'
         >
           {PLAY}
-        </span>{' '}
+        </span>
         {SLOGAN}
       </h1>
-      <p className='text-xl mt-4 mb-2 font-bold tracking-wide'>{SUBHEADING1}</p>
-      <p className='text-xl font-bold tracking-wide'>{SUBHEADING2}</p>
+      <p className='text-lg md:text-xl mt-4 mb-2 font-bold tracking-wide'>
+        {SUBHEADING1}
+      </p>
+      <p className='text-lg md:text-xl font-bold tracking-wide'>
+        {SUBHEADING2}
+      </p>
     </div>
   );
 };

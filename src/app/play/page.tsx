@@ -58,6 +58,7 @@ const GamePageClient = () => {
   const [showResults, setShowResults] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isBackendSleepy, setIsBackendSleepy] = useState<boolean>(false);
+  const [disableInput, setDisableInput] = useState<boolean>(false);
   const openModal = useCallback(() => {
     setIsOpen(true);
     setShowResults(false);
@@ -81,6 +82,7 @@ const GamePageClient = () => {
           if (randomWord !== '') {
             setCount(count - 1);
             setIsBackendSleepy(false);
+            setDisableInput(false);
           } else {
             setIsBackendSleepy(true);
           }
@@ -90,7 +92,7 @@ const GamePageClient = () => {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [count, randomWord]);
+  }, [count, randomWord, setDisableInput, setIsBackendSleepy]);
   useEffect(() => {
     const loadRhymes = async () => {
       const rhymes = await getRhymes(randomWord);
@@ -126,8 +128,9 @@ const GamePageClient = () => {
     }
   }, [rhymes, usedRhymes, value]);
   const timerFinish = useCallback(() => {
+    setDisableInput(true);
     setShowResults(true);
-  }, [setShowResults]);
+  }, [setShowResults, setDisableInput]);
   const rareRhymes = useMemo(() => {
     return Object.entries(usedRhymes)
       .filter(([_, isRare]) => isRare)
@@ -136,28 +139,30 @@ const GamePageClient = () => {
   }, [usedRhymes]);
 
   return (
-    <div className='relative bg-white dark:bg-black h-screen'>
+    <div className='relative max-h-svh bg-white dark:bg-black h-screen'>
       <Header />
       {count > 0 ? (
         <>
-          <p className='text-xl text-center font-semibold mb-4 tracking-wider'>
+          <p className='text-base sm:text-lg md:text-xl text-center font-semibold mb-4 px-4 tracking-wider'>
             {GAME_DESCRIPTION} {timelimit} {GAME_DESCRIPTION2}
           </p>
-          <h2 className='text-5xl text-center font-bold z-50'>
+          <h2 className='text-3xl sm:text-4xl md:text-5xl text-center font-bold z-50'>
             {GAME_STARTS_IN}
           </h2>
           <Countdown />
           {isBackendSleepy && (
-            <p className='text-xl text-center font-semibold mb-4 tracking-wider'>
-              {BACKEND_SLEEPY_MESSAGE}
-            </p>
+            <div className='min-h-7 sm:min-h-8'>
+              <p className='text-sm sm:text-base text-center font-semibold mb-6 tracking-wider'>
+                {BACKEND_SLEEPY_MESSAGE}
+              </p>
+            </div>
           )}
-          <div>
-            <h2 className='text-center font-semibold mb-2 tracking-wider'>
+          <div className='space-y-1 sm:space-y-2'>
+            <h2 className='text-sm sm:text-base text-center font-semibold mb-2 tracking-wider'>
               {RHYME_EARNS}{' '}
               <span className='text-[#ef9967] font-bold'>{_10POINTS}</span>
             </h2>
-            <h2 className='text-center font-semibold tracking-wider'>
+            <h2 className='text-sm sm:text-base text-center font-semibold tracking-wider'>
               {RARE_RHYME_EARNS}{' '}
               <span className='text-[#407c51] font-bold'>{_15POINTS}</span>
             </h2>
@@ -201,6 +206,7 @@ const GamePageClient = () => {
                   onEnter={checkRhyme}
                   score={score}
                   setScore={setScore}
+                  disabled={disableInput}
                 />
               </div>
             </div>
