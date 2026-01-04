@@ -20,15 +20,15 @@ const saudagar = LocalFont({
 });
 
 export const metadata: Metadata = {
-  title: 'RhymeTime',
+  title: 'RhymeTime - Fast & Challenging Word Rhyme Game',
   description:
     'A fast, clever rhyme game that challenges your vocabulary and creativity. Think fast, rhyme smart, and beat your score.',
   openGraph: {
-    title: 'RhymeTime',
+    title: 'RhymeTime - Fast & Challenging Word Rhyme Game',
     description:
       'A fast, clever rhyme game that challenges your vocabulary and creativity. Think fast, rhyme smart, and beat your score.',
     url: 'https://rhyme-time-two.vercel.app/',
-    siteName: 'RhymeTime',
+    siteName: 'RhymeTime - Fast & Challenging Word Rhyme Game',
     images: [
       {
         url: 'https://rhyme-time-two.vercel.app/og.png',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'RhymeTime',
+    title: 'RhymeTime - Fast & Challenging Word Rhyme Game',
     description:
       'A fast, clever rhyme game that challenges your vocabulary and creativity.',
     images: ['https://rhyme-time-two.vercel.app/og.png'],
