@@ -17,11 +17,36 @@ const geistMono = Geist_Mono({
 const saudagar = LocalFont({
   src: '../../public/fonts/Saudagar.ttf',
   variable: '--font-saudagar',
-})
+});
 
 export const metadata: Metadata = {
-  title: 'Rhyme Time',
-  description: 'A rhyme game',
+  title: 'RhymeTime',
+  description:
+    'A fast, clever rhyme game that challenges your vocabulary and creativity. Think fast, rhyme smart, and beat your score.',
+  openGraph: {
+    title: 'RhymeTime',
+    description:
+      'A fast, clever rhyme game that challenges your vocabulary and creativity. Think fast, rhyme smart, and beat your score.',
+    url: 'https://rhyme-time-two.vercel.app/',
+    siteName: 'RhymeTime',
+    images: [
+      {
+        url: 'https://rhyme-time-two.vercel.app/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'RhymeTime App Preview',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RhymeTime',
+    description:
+      'A fast, clever rhyme game that challenges your vocabulary and creativity.',
+    images: ['https://rhyme-time-two.vercel.app/og.png'],
+  },
 };
 
 export default function RootLayout({
