@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'RhymeTime - Fast & Challenging Word Rhyme Game',
     description:
-      'A fast, clever rhyme game that challenges your vocabulary and creativity.',
+      'A fast, clever rhyme game that challenges your vocabulary and creativity. Think fast, rhyme smart, and beat your score.',
     images: ['https://rhyme-time-two.vercel.app/og.png'],
   },
 };
